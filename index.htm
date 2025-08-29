@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 책</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .book-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .book-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .book-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .book-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .book-author {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .navigation {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #5a6fd8;
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .book-content {
+            min-height: 500px;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            padding: 40px;
+            line-height: 1.8;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page h1 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .page h2 {
+            color: #764ba2;
+            font-size: 1.5rem;
+            margin: 30px 0 20px 0;
+        }
+
+        .page p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .table-of-contents {
+            list-style: none;
+        }
+
+        .table-of-contents li {
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            border-left: 3px solid transparent;
+            padding-left: 15px;
+        }
+
+        .table-of-contents li:hover {
+            color: #667eea;
+            border-left-color: #667eea;
+        }
+
+        .chapter-number {
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        .page-break {
+            margin: 40px 0;
+            border-top: 1px dashed #ccc;
+            padding-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .book-title {
+                font-size: 2rem;
+            }
+            
+            .page {
+                padding: 20px;
+            }
+            
+            .navigation {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="book-container">
+        <div class="book-header">
+            <h1 class="book-title">나의 책</h1>
+            <p class="book-subtitle">웹에서 읽는 디지털 북</p>
+            <p class="book-author">작성자: 홍길동</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" onclick="previousPage()" id="prevBtn">이전 페이지</button>
+            <span class="page-info">
+                <span id="currentPage">1</span> / <span id="totalPages">4</span>
+            </span>
+            <button class="nav-button" onclick="nextPage()" id="nextBtn">다음 페이지</button>
+        </div>
+
+        <div class="book-content">
+            <!-- 목차 페이지 -->
+            <div class="page active" id="page1">
+                <h1>목차</h1>
+                <ul class="table-of-contents">
+                    <li onclick="goToPage(2)">
+                        <span class="chapter-number">제1장</span> 책의 시작
+                    </li>
+                    <li onclick="goToPage(3)">
+                        <span class="chapter-number">제2장</span> 내용 전개
+                    </li>
+                    <li onclick="goToPage(4)">
+                        <span class="chapter-number">제3장</span> 마무리
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 제1장 -->
+            <div class="page" id="page2">
+                <h1>제1장: 책의 시작</h1>
+                <p>여기서부터 책의 내용이 시작됩니다. 이 템플릿을 사용하여 원하는 내용으로 채워보세요.</p>
+                
+                <h2>첫 번째 소제목</h2>
+                <p>각 장은 여러 개의 소제목으로 구성할 수 있습니다. 텍스트는 자동으로 양쪽 정렬되어 깔끔한 모양을 유지합니다.</p>
+                
+                <p>문단 사이의 간격과 줄 높이가 적절히 조정되어 있어 읽기 편안합니다. 글꼴도 책 읽기에 적합한 serif 폰트를 사용했습니다.</p>
+
+                <h2>두 번째 소제목</h2>
+                <p>내용을 계속 추가하면서 책을 완성해보세요. 각 페이지는 페이드인 효과와 함께 부드럽게 전환됩니다.</p>
+            </div>
+
+            <!-- 제2장 -->
+            <div class="page" id="page3">
+                <h1>제2장: 내용 전개</h1>
+                <p>두 번째 장입니다. 여기에 본격적인 내용을 작성할 수 있습니다.</p>
+                
+                <h2>핵심 내용</h2>
+                <p>책의 핵심이 되는 내용을 이곳에 작성하세요. 독자들이 가장 관심 있어 할 부분입니다.</p>
+                
+                <div class="page-break"></div>
+                
+                <h2>추가 설명</h2>
+                <p>필요한 경우 페이지 구분선을 사용하여 내용을 나눌 수도 있습니다. 위의 점선이 그 예시입니다.</p>
+                
+                <p>모바일 기기에서도 잘 보이도록 반응형으로 제작되었습니다.</p>
+            </div>
+
+            <!-- 제3장 -->
+            <div class="page" id="page4">
+                <h1>제3장: 마무리</h1>
+                <p>책의 마지막 장입니다. 지금까지의 내용을 정리하고 마무리하는 부분입니다.</p>
+                
+                <h2>요약</h2>
+                <p>이 템플릿의 주요 특징들:</p>
+                <p>• 깔끔하고 읽기 쉬운 디자인<br>
+                • 페이지 네비게이션 기능<br>
+                • 목차에서 바로 이동 가능<br>
+                • 모바일 친화적 반응형 디자인<br>
+                • 부드러운 페이지 전환 효과</p>
+                
+                <h2>마지막 인사</h2>
+                <p>이 템플릿을 사용하여 멋진 온라인 책을 만들어보세요. 내용을 수정하고 페이지를 추가하여 원하는 책을 완성할 수 있습니다.</p>
+                
+                <p style="text-align: center; margin-top: 40px; font-style: italic; color: #666;">
+                    - 끝 -
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPageNum = 1;
+        const totalPagesNum = 4;
+
+        function updateNavigation() {
+            document.getElementById('currentPage').textContent = currentPageNum;
+            document.getElementById('totalPages').textContent = totalPagesNum;
+            
+            // 이전 버튼 활성화/비활성화
+            document.getElementById('prevBtn').disabled = currentPageNum === 1;
+            
+            // 다음 버튼 활성화/비활성화
+            document.getElementById('nextBtn').disabled = currentPageNum === totalPagesNum;
+        }
+
+        function showPage(pageNum) {
+            // 모든 페이지 숨기기
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 해당 페이지 보이기
+            document.getElementById('page' + pageNum).classList.add('active');
+            
+            currentPageNum = pageNum;
+            updateNavigation();
+        }
+
+        function nextPage() {
+            if (currentPageNum < totalPagesNum) {
+                showPage(currentPageNum + 1);
+            }
+        }
+
+        function previousPage() {
+            if (currentPageNum > 1) {
+                showPage(currentPageNum - 1);
+            }
+        }
+
+        function goToPage(pageNum) {
+            showPage(pageNum);
+        }
+
+        // 키보드 단축키
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') {
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                previousPage();
+            }
+        });
+
+        // 초기화
+        updateNavigation();
+    </script>
+</body>
+</html>
